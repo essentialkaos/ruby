@@ -68,10 +68,10 @@ jobs:
           echo -e "\033[34mBase image:\033[0m $base_image"
 
       - name: Check if build/rebuild is required
-        id: rebuild_check
+        id: build_check
         continue-on-error: true
         run : |
-          # [rebuild-check]
+          # [build-check]
 
           if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: forced rebuild)"
@@ -189,10 +189,10 @@ jobs:
           echo -e "\033[34mBase image:\033[0m $base_image"
 
       - name: Check if build/rebuild is required
-        id: rebuild_check
+        id: build_check
         continue-on-error: true
         run : |
-          # [rebuild-check]
+          # [build-check]
 
           if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: forced rebuild)"
@@ -309,10 +309,10 @@ jobs:
           echo -e "\033[34mBase image:\033[0m $base_image"
 
       - name: Check if build/rebuild is required
-        id: rebuild_check
+        id: build_check
         continue-on-error: true
         run : |
-          # [rebuild-check]
+          # [build-check]
 
           if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: forced rebuild)"
