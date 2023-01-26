@@ -39,8 +39,9 @@ jobs:
     needs: Hadolint
 
     strategy:
+      fail-fast: false
+      max-parallel: 1
       matrix:
-        fail-fast: false
         version: [
           '2.7.7',
           '3.0.5',
@@ -163,8 +164,9 @@ jobs:
     needs: Hadolint
 
     strategy:
+      fail-fast: false
+      max-parallel: 1
       matrix:
-        fail-fast: false
         version: [
           '2.7.7-jemalloc',
           '3.0.5-jemalloc',
@@ -287,8 +289,9 @@ jobs:
     needs: Hadolint
 
     strategy:
+      fail-fast: false
+      max-parallel: 1
       matrix:
-        fail-fast: false
         version: [
           'jruby-9.2.20.1',
           'jruby-9.3.9.0',
