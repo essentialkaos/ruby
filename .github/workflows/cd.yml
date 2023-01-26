@@ -90,7 +90,7 @@ jobs:
         run : |
           # [build-check]
 
-          if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
+          if [[ "${{github.event.inputs.force_rebuild}}" == "true" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: forced rebuild)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -215,7 +215,7 @@ jobs:
         run : |
           # [build-check]
 
-          if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
+          if [[ "${{github.event.inputs.force_rebuild}}" == "true" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: forced rebuild)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -223,7 +223,7 @@ jobs:
 
           echo -e "::group::\033[34mDownloading built image…\033[0m"
 
-          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}} ; then
+          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}-jemalloc ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -246,7 +246,7 @@ jobs:
             exit 1
           fi
 
-          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
+          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}-jemalloc" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
             echo "::warning::Rebuild image (reason: base image rebuilt)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -262,7 +262,7 @@ jobs:
           build-args: |
             REGISTRY=docker.io
             RUBY_VERSION=${{matrix.version}}
-          tags: ${{github.repository}}:${{matrix.version}}
+          tags: ${{github.repository}}:${{matrix.version}}-jemalloc
 
       - name: Build and push Docker images (GHCR)
         if: ${{ steps.build_check.outputs.build == 'true' }}
@@ -274,12 +274,12 @@ jobs:
           build-args: |
             REGISTRY=ghcr.io
             RUBY_VERSION=${{matrix.version}}
-          tags: ghcr.io/${{github.repository}}:${{matrix.version}}
+          tags: ghcr.io/${{github.repository}}:${{matrix.version}}-jemalloc
 
       - name: Show info about images
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ${{github.repository}}:${{matrix.version}}
+          image: ${{github.repository}}:${{matrix.version}}-jemalloc
 
   JRuby:
     name: JRuby
@@ -339,7 +339,7 @@ jobs:
         run : |
           # [build-check]
 
-          if [[ "${{ github.event.inputs.force_rebuild }}" == "true" ]] ; then
+          if [[ "${{github.event.inputs.force_rebuild}}" == "true" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: forced rebuild)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -347,7 +347,7 @@ jobs:
 
           echo -e "::group::\033[34mDownloading built image…\033[0m"
 
-          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}} ; then
+          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:jruby-${{matrix.version}} ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -370,7 +370,7 @@ jobs:
             exit 1
           fi
 
-          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
+          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:jruby-${{matrix.version}}" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
             echo "::warning::Rebuild image (reason: base image rebuilt)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -386,7 +386,7 @@ jobs:
           build-args: |
             REGISTRY=docker.io
             RUBY_VERSION=${{matrix.version}}
-          tags: ${{github.repository}}:${{matrix.version}}
+          tags: ${{github.repository}}:jruby-${{matrix.version}}
 
       - name: Build and push Docker images (GHCR)
         if: ${{ steps.build_check.outputs.build == 'true' }}
@@ -398,9 +398,9 @@ jobs:
           build-args: |
             REGISTRY=ghcr.io
             RUBY_VERSION=${{matrix.version}}
-          tags: ghcr.io/${{github.repository}}:${{matrix.version}}
+          tags: ghcr.io/${{github.repository}}:jruby-${{matrix.version}}
 
       - name: Show info about images
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ${{github.repository}}:${{matrix.version}}
+          image: ${{github.repository}}:jruby-${{matrix.version}}
