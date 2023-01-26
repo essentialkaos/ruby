@@ -18,13 +18,29 @@ permissions:
   contents: read
 
 jobs:
+  Hadolint:
+    name: Hadolint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check dockerfiles with Hadolint
+        uses: essentialkaos/hadolint-action@v1
+        with:
+          files: jruby.docker ruby.docker ruby-jemalloc.docker
+
   Ruby:
     name: Ruby
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    needs: Hadolint
+
     strategy:
       matrix:
+        fail-fast: false
         version: [
           '2.7.7',
           '3.0.5',
@@ -144,8 +160,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    needs: Hadolint
+
     strategy:
       matrix:
+        fail-fast: false
         version: [
           '2.7.7-jemalloc',
           '3.0.5-jemalloc',
@@ -265,8 +284,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
+    needs: Hadolint
+
     strategy:
       matrix:
+        fail-fast: false
         version: [
           'jruby-9.2.20.1',
           'jruby-9.3.9.0',
