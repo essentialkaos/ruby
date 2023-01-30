@@ -157,7 +157,7 @@ jobs:
       - name: Show info about images
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ${{github.repository}}:${{matrix.version}}
+          image: ghcr.io/${{github.repository}}:${{matrix.version}}
 
   RubyJemalloc:
     name: Ruby+Jemalloc
@@ -282,7 +282,7 @@ jobs:
       - name: Show info about images
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ${{github.repository}}:${{matrix.version}}-jemalloc
+          image: ghcr.io/${{github.repository}}:${{matrix.version}}-jemalloc
 
   JRuby:
     name: JRuby
@@ -406,4 +406,4 @@ jobs:
       - name: Show info about images
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ${{github.repository}}:jruby-${{matrix.version}}
+          image: ghcr.io/${{github.repository}}:jruby-${{matrix.version}}
