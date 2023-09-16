@@ -13,21 +13,18 @@ This repository contains workflow for the automatic Ruby images building using [
 
 ### Versions
 
-- `2.7.7`
-- `2.7.7-jemalloc`
-- `3.0.5`
-- `3.0.5-jemalloc`
-- `3.1.3`
-- `3.1.3-jemalloc`
-- `3.2.0`
-- `3.2.0-jemalloc`
-- `3.2.1`
-- `3.2.1-jemalloc`
-- `jruby-9.2.20.1`
-- `jruby-9.3.9.0`
-- `jruby-9.4.0.0`
-- `jruby-9.4.1.0`
-
+| Base    | Jemalloc         | JRuby           |
+|---------|------------------|-----------------|
+| `2.7.7` | `2.7.7-jemalloc` | `jruby-9.3.9.0` |
+| `2.7.8` | `2.7.8-jemalloc` | `jruby-9.3.10.0` |
+| `3.0.5` | `3.0.5-jemalloc` | `jruby-9.4.0.0` |
+| `3.0.6` | `3.0.6-jemalloc` | `jruby-9.4.1.0` |
+| `3.1.3` | `3.1.3-jemalloc` | `jruby-9.4.2.0` |
+| `3.1.4` | `3.1.4-jemalloc` | `jruby-9.4.3.0` |
+| `3.2.0` | `3.2.0-jemalloc` | |
+| `3.2.1` | `3.2.1-jemalloc` | |
+| `3.2.2` | `3.2.2-jemalloc` | |
+| `3.1.3` | `3.1.3-jemalloc` | |
 
 Usage exmplates:
 
