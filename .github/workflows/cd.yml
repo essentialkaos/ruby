@@ -43,7 +43,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         version: [
           '2.7.7',
@@ -188,7 +188,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         version: [
           '2.7.7',
@@ -333,7 +333,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         version: [
           '9.3.9.0',
