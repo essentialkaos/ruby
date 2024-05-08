@@ -141,18 +141,12 @@ jobs:
             exit 0
           fi
 
-      - name: Setup Docker BuildX
-        if: ${{ steps.build_check.outputs.build == 'true' }}
-        uses: docker/setup-buildx-action@v3
-
       - name: Build and push Docker images (Docker)
         if: ${{ steps.build_check.outputs.build == 'true' }}
         uses: docker/build-push-action@v5
         with:
           push: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           file: ${{steps.metadata.outputs.dockerfile}}
           build-args: |
             REGISTRY=docker.io
@@ -165,8 +159,6 @@ jobs:
         with:
           push: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           file: ${{steps.metadata.outputs.dockerfile}}
           build-args: |
             REGISTRY=ghcr.io
@@ -177,7 +169,7 @@ jobs:
         if: ${{ steps.build_check.outputs.build == 'true' }}
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ghcr.io/${{github.repository}}:${{matrix.version}}
+          image: ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}
 
   RubyJemalloc:
     name: Ruby+Jemalloc
@@ -286,18 +278,12 @@ jobs:
             exit 0
           fi
 
-      - name: Setup Docker BuildX
-        if: ${{ steps.build_check.outputs.build == 'true' }}
-        uses: docker/setup-buildx-action@v3
-
       - name: Build and push Docker images (Docker)
         if: ${{ steps.build_check.outputs.build == 'true' }}
         uses: docker/build-push-action@v5
         with:
           push: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           file: ${{steps.metadata.outputs.dockerfile}}
           build-args: |
             REGISTRY=docker.io
@@ -310,8 +296,6 @@ jobs:
         with:
           push: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           file: ${{steps.metadata.outputs.dockerfile}}
           build-args: |
             REGISTRY=ghcr.io
@@ -322,7 +306,7 @@ jobs:
         if: ${{ steps.build_check.outputs.build == 'true' }}
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ghcr.io/${{github.repository}}:${{matrix.version}}-jemalloc
+          image: ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}-jemalloc
 
   JRuby:
     name: JRuby
@@ -427,18 +411,12 @@ jobs:
             exit 0
           fi
 
-      - name: Setup Docker BuildX
-        if: ${{ steps.build_check.outputs.build == 'true' }}
-        uses: docker/setup-buildx-action@v3
-
       - name: Build and push Docker images (Docker)
         if: ${{ steps.build_check.outputs.build == 'true' }}
         uses: docker/build-push-action@v5
         with:
           push: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           file: ${{steps.metadata.outputs.dockerfile}}
           build-args: |
             REGISTRY=docker.io
@@ -451,8 +429,6 @@ jobs:
         with:
           push: true
           context: .
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           file: ${{steps.metadata.outputs.dockerfile}}
           build-args: |
             REGISTRY=ghcr.io
@@ -463,4 +439,4 @@ jobs:
         if: ${{ steps.build_check.outputs.build == 'true' }}
         uses: essentialkaos/docker-info-action@v1
         with:
-          image: ghcr.io/${{github.repository}}:jruby-${{matrix.version}}
+          image: ghcr.io/${{env.IMAGE_NAME}}:jruby-${{matrix.version}}
