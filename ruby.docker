@@ -2,18 +2,9 @@
 
 ARG REGISTRY="docker.io"
 
-## BASE ########################################################################
-
-FROM ${REGISTRY}/essentialkaos/oraclelinux:8 as installer_base
-
-RUN dnf -y -q install https://yum.kaos.st/kaos-repo-latest.el8.noarch.rpm && \
-    dnf -y -q install rbenv rbinstall libyaml && \
-    dnf -y -q module disable "*" && \
-    dnf clean all && rm -rf /var/cache/dnf /var/log/dnf.*
-
 ## INSTALLER ###################################################################
 
-FROM installer_base as installer
+FROM ${REGISTRY}/essentialkaos/rbinstall:ol8 as installer
 
 ARG RUBY_VERSION=3.2.0
 ARG WITH_STATIC=no
