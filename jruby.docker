@@ -2,16 +2,22 @@
 
 ARG REGISTRY="docker.io"
 
-## BUILDER #####################################################################
+## BASE ########################################################################
 
-FROM ${REGISTRY}/essentialkaos/oraclelinux:8 as installer
-
-ARG RUBY_VERSION=9.3.9.0
+FROM ${REGISTRY}/essentialkaos/oraclelinux:8 as base
 
 RUN dnf -y -q install https://yum.kaos.st/kaos-repo-latest.el8.noarch.rpm && \
     dnf -y -q install rbenv rbinstall jre11 && \
-    dnf -y -q module disable "*" && dnf clean all && rm -rf /var/cache/dnf /var/log/dnf.* && \
-    rbinstall jruby-${RUBY_VERSION} --no-progress
+    dnf -y -q module disable "*" && \
+    dnf clean all && rm -rf /var/cache/dnf /var/log/dnf.*
+
+## INSTALLER ###################################################################
+
+FROM base as installer
+
+ARG RUBY_VERSION=9.3.9.0
+
+RUN rbinstall jruby-${RUBY_VERSION} --no-progress
 
 ## FINAL IMAGE  ################################################################
 
@@ -19,8 +25,8 @@ FROM ${REGISTRY}/essentialkaos/oraclelinux:8
 
 ARG RUBY_VERSION=9.3.9.0
 
-LABEL org.opencontainers.image.title="rbinstall-ruby" \
-      org.opencontainers.image.description="RBEnv with prebuilt Ruby" \
+LABEL org.opencontainers.image.title="rbinstall-jruby" \
+      org.opencontainers.image.description="RBEnv with prebuilt Ruby (JRuby-${RUBY_VERSION})" \
       org.opencontainers.image.vendor="ESSENTIAL KAOS" \
       org.opencontainers.image.authors="Anton Novojilov" \
       org.opencontainers.image.licenses="Apache-2.0" \
@@ -32,7 +38,8 @@ COPY --from=installer /usr/local/rbenv/versions/jruby-${RUBY_VERSION} \
 
 RUN dnf -y -q install https://yum.kaos.st/kaos-repo-latest.el8.noarch.rpm && \
     dnf -y -q install rbenv jre11 && \
-    dnf -y -q module disable "*" && dnf clean all && rm -rf /var/cache/dnf /var/log/dnf.* && \
+    dnf -y -q module disable "*" && \
+    dnf clean all && rm -rf /var/cache/dnf /var/log/dnf.* && \
     source /etc/profile.d/rbenv.sh && \
     rbenv global jruby-${RUBY_VERSION}
 
