@@ -82,7 +82,7 @@ jobs:
         id: metadata
         run: |
           docker_file="ruby.docker"
-          base_image=$(grep 'FROM ' $docker_file | grep -v 'builder' | sed 's#${REGISTRY}/##' | tail -1 | cut -f2 -d' ')
+          base_image=$(grep 'FROM ' $docker_file | grep -v 'installer' | sed 's#${REGISTRY}/##' | tail -1 | cut -f2 -d' ')
 
           if [[ -z "$base_image" ]] ; then
             echo "::error::Can't extract base image info"
@@ -99,7 +99,7 @@ jobs:
       - name: Check if build/rebuild is required
         id: build_check
         continue-on-error: true
-        run : |
+        run: |
           # [build-check]
 
           if [[ "${{github.event.inputs.force_rebuild}}" == "true" ]] ; then
@@ -108,32 +108,29 @@ jobs:
             exit 0
           fi
 
-          echo -e "::group::\033[34mDownloading built image…\033[0m"
+          echo -e "::group::\033[34mFetching manifest of image…\033[0m"
 
-          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}} ; then
+          image_base_layers=$(docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" -v 2>/dev/null | jq '.[0].OCIManifest.layers[].digest')
+
+          if [[ -z "$image_base_layers" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           echo "::endgroup::"
-          echo -e "::group::\033[34mDownloading base image…\033[0m"
+          echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
-          if ! docker pull ${{steps.metadata.outputs.baseimage}} ; then
-            echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}}"
+          base_layer=$(docker manifest inspect "${{steps.metadata.outputs.baseimage}}" -v 2>/dev/null | jq '.SchemaV2Manifest.layers[-1].digest')
+
+          if [[ -z "$base_layer" ]] ; then
+            echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}} manifest"
             exit 1
           fi
 
           echo "::endgroup::"
 
-          base_layer=$(docker inspect "${{steps.metadata.outputs.baseimage}}" | jq -r '.[0].RootFS.Layers[-1]')
-
-          if [[ -z "$base_layer" ]] ; then
-            echo "::error::Can't extract layers info from base image"
-            exit 1
-          fi
-
-          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
+          if ! echo "$image_base_layers" | grep -q "$base_layer" ; then
             echo "::warning::Rebuild image (reason: base image rebuilt)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -224,7 +221,7 @@ jobs:
         id: metadata
         run: |
           docker_file="ruby-jemalloc.docker"
-          base_image=$(grep 'FROM ' $docker_file | grep -v 'builder' | sed 's#${REGISTRY}/##' | tail -1 | cut -f2 -d' ')
+          base_image=$(grep 'FROM ' $docker_file | grep -v 'installer' | sed 's#${REGISTRY}/##' | tail -1 | cut -f2 -d' ')
 
           if [[ -z "$base_image" ]] ; then
             echo "::error::Can't extract base image info"
@@ -241,7 +238,7 @@ jobs:
       - name: Check if build/rebuild is required
         id: build_check
         continue-on-error: true
-        run : |
+        run: |
           # [build-check]
 
           if [[ "${{github.event.inputs.force_rebuild}}" == "true" ]] ; then
@@ -250,32 +247,29 @@ jobs:
             exit 0
           fi
 
-          echo -e "::group::\033[34mDownloading built image…\033[0m"
+          echo -e "::group::\033[34mFetching manifest of image…\033[0m"
 
-          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}-jemalloc ; then
+          image_base_layers=$(docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}-jemalloc" -v 2>/dev/null | jq '.[0].OCIManifest.layers[].digest')
+
+          if [[ -z "$image_base_layers" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           echo "::endgroup::"
-          echo -e "::group::\033[34mDownloading base image…\033[0m"
+          echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
-          if ! docker pull ${{steps.metadata.outputs.baseimage}} ; then
-            echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}}"
+          base_layer=$(docker manifest inspect "${{steps.metadata.outputs.baseimage}}" -v 2>/dev/null | jq '.SchemaV2Manifest.layers[-1].digest')
+
+          if [[ -z "$base_layer" ]] ; then
+            echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}} manifest"
             exit 1
           fi
 
           echo "::endgroup::"
 
-          base_layer=$(docker inspect "${{steps.metadata.outputs.baseimage}}" | jq -r '.[0].RootFS.Layers[-1]')
-
-          if [[ -z "$base_layer" ]] ; then
-            echo "::error::Can't extract layers info from base image"
-            exit 1
-          fi
-
-          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}-jemalloc" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
+          if ! echo "$image_base_layers" | grep -q "$base_layer" ; then
             echo "::warning::Rebuild image (reason: base image rebuilt)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
@@ -362,7 +356,7 @@ jobs:
         id: metadata
         run: |
           docker_file="jruby.docker"
-          base_image=$(grep 'FROM ' $docker_file | grep -v 'builder' | sed 's#${REGISTRY}/##' | tail -1 | cut -f2 -d' ')
+          base_image=$(grep 'FROM ' $docker_file | grep -v 'installer' | sed 's#${REGISTRY}/##' | tail -1 | cut -f2 -d' ')
 
           if [[ -z "$base_image" ]] ; then
             echo "::error::Can't extract base image info"
@@ -379,7 +373,7 @@ jobs:
       - name: Check if build/rebuild is required
         id: build_check
         continue-on-error: true
-        run : |
+        run: |
           # [build-check]
 
           if [[ "${{github.event.inputs.force_rebuild}}" == "true" ]] ; then
@@ -388,32 +382,29 @@ jobs:
             exit 0
           fi
 
-          echo -e "::group::\033[34mDownloading built image…\033[0m"
+          echo -e "::group::\033[34mFetching manifest of image…\033[0m"
 
-          if ! docker pull ghcr.io/${{env.IMAGE_NAME}}:jruby-${{matrix.version}} ; then
+          image_base_layers=$(docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:jruby-${{matrix.version}}" -v 2>/dev/null | jq '.[0].OCIManifest.layers[].digest')
+
+          if [[ -z "$image_base_layers" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           echo "::endgroup::"
-          echo -e "::group::\033[34mDownloading base image…\033[0m"
+          echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
-          if ! docker pull ${{steps.metadata.outputs.baseimage}} ; then
-            echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}}"
+          base_layer=$(docker manifest inspect "${{steps.metadata.outputs.baseimage}}" -v 2>/dev/null | jq '.SchemaV2Manifest.layers[-1].digest')
+
+          if [[ -z "$base_layer" ]] ; then
+            echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}} manifest"
             exit 1
           fi
 
           echo "::endgroup::"
 
-          base_layer=$(docker inspect "${{steps.metadata.outputs.baseimage}}" | jq -r '.[0].RootFS.Layers[-1]')
-
-          if [[ -z "$base_layer" ]] ; then
-            echo "::error::Can't extract layers info from base image"
-            exit 1
-          fi
-
-          if ! docker inspect "ghcr.io/${{env.IMAGE_NAME}}:jruby-${{matrix.version}}" | jq -r '.[0].RootFS.Layers' | grep -q "$base_layer" ; then
+          if ! echo "$image_base_layers" | grep -q "$base_layer" ; then
             echo "::warning::Rebuild image (reason: base image rebuilt)"
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
