@@ -21,23 +21,27 @@ This repository contains workflow for the automatic Ruby images building using [
 | `3.0.6` | `3.0.6-jemalloc` | `jruby-9.4.1.0` |
 | `3.1.3` | `3.1.3-jemalloc` | `jruby-9.4.2.0` |
 | `3.1.4` | `3.1.4-jemalloc` | `jruby-9.4.3.0` |
-| `3.2.0` | `3.2.0-jemalloc` | |
+| `3.1.5` | `3.1.5-jemalloc` | `jruby-9.4.4.0` |
+| `3.2.0` | `3.2.0-jemalloc` | `jruby-9.4.5.0` |
 | `3.2.1` | `3.2.1-jemalloc` | |
 | `3.2.2` | `3.2.2-jemalloc` | |
-| `3.1.3` | `3.1.3-jemalloc` | |
+| `3.2.3` | `3.2.3-jemalloc` | |
+| `3.2.4` | `3.2.4-jemalloc` | |
+| `3.3.0` | `3.3.0-jemalloc` | |
+| `3.3.1` | `3.3.1-jemalloc` | |
 
 Usage exmplates:
 
 Pull image from DockerHub:
 
 ```bash
-docker pull essentialkaos/ruby:3.2.0-jemalloc
+docker pull essentialkaos/ruby:3.3.0-jemalloc
 ```
 
 Pull image from GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/essentialkaos/ruby:jruby-9.4.0.0
+docker pull ghcr.io/essentialkaos/ruby:jruby-9.4.5.0
 ```
 
 ### Contributing
