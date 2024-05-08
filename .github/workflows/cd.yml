@@ -117,6 +117,9 @@ jobs:
             exit 0
           fi
 
+          echo "Image layers:"
+          echo "$image_base_layers"
+
           echo "::endgroup::"
           echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
@@ -134,6 +137,9 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
+
+          echo "Base image layer:"
+          echo "$base_layer"
 
       - name: Setup Docker BuildX
         if: ${{ steps.build_check.outputs.build == 'true' }}
@@ -255,6 +261,9 @@ jobs:
             exit 0
           fi
 
+          echo "Image layers:"
+          echo "$image_base_layers"
+
           echo "::endgroup::"
           echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
@@ -272,6 +281,9 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
+
+          echo "Base image layer:"
+          echo "$base_layer"
 
       - name: Setup Docker BuildX
         if: ${{ steps.build_check.outputs.build == 'true' }}
@@ -389,6 +401,9 @@ jobs:
             exit 0
           fi
 
+          echo "Image layers:"
+          echo "$image_base_layers"
+
           echo "::endgroup::"
           echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
@@ -406,6 +421,9 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
+
+          echo "Base image layer:"
+          echo "$base_layer"
 
       - name: Setup Docker BuildX
         if: ${{ steps.build_check.outputs.build == 'true' }}
