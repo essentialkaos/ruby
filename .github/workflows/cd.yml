@@ -130,6 +130,9 @@ jobs:
             exit 1
           fi
 
+          echo "Base image layer:"
+          echo "$base_layer"
+
           echo "::endgroup::"
 
           if ! echo "$image_base_layers" | grep -q "$base_layer" ; then
@@ -137,9 +140,6 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-
-          echo "Base image layer:"
-          echo "$base_layer"
 
       - name: Setup Docker BuildX
         if: ${{ steps.build_check.outputs.build == 'true' }}
@@ -275,6 +275,9 @@ jobs:
             exit 1
           fi
 
+          echo "Base image layer:"
+          echo "$base_layer"
+
           echo "::endgroup::"
 
           if ! echo "$image_base_layers" | grep -q "$base_layer" ; then
@@ -282,9 +285,6 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-
-          echo "Base image layer:"
-          echo "$base_layer"
 
       - name: Setup Docker BuildX
         if: ${{ steps.build_check.outputs.build == 'true' }}
@@ -416,6 +416,9 @@ jobs:
             exit 1
           fi
 
+          echo "Base image layer:"
+          echo "$base_layer"
+
           echo "::endgroup::"
 
           if ! echo "$image_base_layers" | grep -q "$base_layer" ; then
@@ -423,9 +426,6 @@ jobs:
             echo "build=true" >> $GITHUB_OUTPUT
             exit 0
           fi
-
-          echo "Base image layer:"
-          echo "$base_layer"
 
       - name: Setup Docker BuildX
         if: ${{ steps.build_check.outputs.build == 'true' }}
