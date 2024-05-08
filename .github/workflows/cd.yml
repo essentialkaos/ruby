@@ -115,7 +115,7 @@ jobs:
           docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq '.layers[]'
           docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq '.layers[].digest'
 
-          image_base_layers=$(docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" -v 2>/dev/null | jq '.layers[].digest')
+          image_base_layers=$(docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" -v | jq '.layers[].digest')
 
           if [[ -z "$image_base_layers" ]] ; then
             echo "::warning::Rebuild ${{matrix.version}} (reason: new image)"
@@ -126,7 +126,7 @@ jobs:
           echo "::endgroup::"
           echo -e "::group::\033[34mFetching manifest of base image…\033[0m"
 
-          base_layer=$(docker manifest inspect "${{steps.metadata.outputs.baseimage}}" -v 2>/dev/null | jq '.SchemaV2Manifest.layers[-1].digest')
+          base_layer=$(docker manifest inspect "${{steps.metadata.outputs.baseimage}}" -v | jq '.SchemaV2Manifest.layers[-1].digest')
 
           if [[ -z "$base_layer" ]] ; then
             echo "::error::Can't download image ${{steps.metadata.outputs.baseimage}} manifest"
