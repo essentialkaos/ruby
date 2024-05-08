@@ -110,6 +110,10 @@ jobs:
           echo -e "::group::\033[34mFetching manifest of image…\033[0m"
 
           docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq
+          docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq '.'
+          docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq '.layers'
+          docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq '.layers[]'
+          docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" | jq '.layers[].digest'
 
           image_base_layers=$(docker manifest inspect "ghcr.io/${{env.IMAGE_NAME}}:${{matrix.version}}" -v 2>/dev/null | jq '.layers[].digest')
 
