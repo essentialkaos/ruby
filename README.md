@@ -1,8 +1,8 @@
-<p align="center"><a href="#readme"><img src="https://gh.kaos.st/ruby.svg"/></a></p>
+<p align="center"><a href="#readme"><img src=".github/images/card.svg"/></a></p>
 
 <p align="center">
   <a href="https://kaos.sh/w/ruby/cd"><img src="https://kaos.sh/w/ruby/cd.svg" alt="GitHub Actions CD Status" /></a>
-  <a href="#license"><img src="https://gh.kaos.st/apache2.svg"></a>
+  <a href="#license"><img src=".github/images/license.svg"/></a>
 </p>
 
 <p align="center"><a href="#versions">Versions</a> • <a href="#contributing">Contributing</a> • <a href="#license">License</a></p>
